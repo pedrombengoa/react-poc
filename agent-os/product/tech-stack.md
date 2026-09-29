@@ -12,7 +12,8 @@
 - React Router for the public demo route and future authenticated routes.
 - Tailwind CSS + shadcn/ui for a small accessible component set.
 - Recharts for the two dashboard visualizations.
-- Local fictional fixtures for the read-only MVP demo; the MVP has no forms, authentication, or backend dependency.
+- SheetJS (`xlsx`) for browser-side `.xls` parsing; supports legacy Excel workbooks without a backend.
+- Transient session import: the user uploads a local `.xls` expense file; parsed transactions are held in React state and cleared on refresh. No fixtures, no backend dependency, no authentication required for Phase 1.
 
 ## Post-MVP: Web Authentication and Persistence
 
@@ -33,7 +34,7 @@
 
 - Small feature-oriented web layout (app, dashboard, transactions, shared UI); add auth and data-access modules in Phase 2 rather than scaffolding them into the MVP.
 - Keep derived KPIs and chart data as pure functions over transactions; test them independently.
-- Use React state for transient UI state and fixture data for the MVP demo; add TanStack Query for remote server state in Phase 2.
+- Use React state for transient UI state including the imported transaction list; add TanStack Query for remote server state in Phase 2.
 - No dedicated API server: the Phase 2 authenticated client accesses Supabase under database-enforced RLS.
 
 ## Quality and Deployment
@@ -52,7 +53,7 @@
 - **Supabase Free (Phase 2):** current published limits include 50,000 monthly active users, 500 MB database size, and 5 GB egress; free projects are paused after one week of inactivity. The read-only fixture demo avoids making the public experience depend on that service. [Supabase pricing](https://supabase.com/pricing)
 - GitHub Actions usage depends on repository visibility and account quota. Keep workflows short and verify included minutes if the repository is private.
 
-## Product Decisions Still to Confirm Before Implementation
+## Product Decisions Confirmed
 
-- Choose the single display currency and locale for demo fixtures.
-- Keep the public MVP demo read-only; authenticated CRUD is deferred to Phase 2 and persists through Supabase.
+- Display currency: USD (`en-US` locale).
+- Phase 1 is import-only and read-only; authenticated CRUD is deferred to Phase 2 via Supabase.

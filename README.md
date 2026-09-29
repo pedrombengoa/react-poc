@@ -1,6 +1,6 @@
 # Personal Finance Dashboard
 
-A recruiter-facing proof of concept built to demonstrate productive, responsible AI-assisted development in a modern React stack. The public dashboard opens without login and uses fictional, read-only data; no backend secrets or personal financial information are involved.
+A recruiter-facing proof of concept built to demonstrate productive, responsible AI-assisted development in a modern React stack. The public dashboard opens without login; you import your own `.xls` expense file to populate it. No backend secrets or personal financial information are stored — imported data lives only in memory and is cleared on page refresh.
 
 ## Demo
 
@@ -10,15 +10,29 @@ Deployment target: Cloudflare Pages Free (`*.pages.dev`). The live URL will be a
 
 ## Features
 
+- Import expense transactions from a downloadable `.xls` template.
 - Four period-based KPIs: spending, income, balance, and transaction count.
 - Expense breakdown and monthly income/spending charts.
 - Global date-range and category filters shared by every dashboard view.
 - Responsive, keyboard-usable desktop and mobile layouts.
-- Fictional data generated locally; no authentication, API, or Supabase dependency in Phase 1.
+- No authentication, API, or Supabase dependency in Phase 1.
+
+## Import Format
+
+Download the example file from the dashboard's import panel, or create your own `.xls` spreadsheet with these four columns:
+
+| Column | Type | Notes |
+|---|---|---|
+| `date` | Excel date or `YYYY-MM-DD` | Any valid date cell or ISO string |
+| `description` | Text | Non-blank |
+| `category` | Text | One of: `housing`, `groceries`, `dining`, `transport`, `wellness`, `shopping` |
+| `amount` | Number | Positive USD, at most 2 decimal places |
+
+The import validates the entire file before committing. Invalid rows are reported with their row number. A successful import replaces the current session's dataset; a failed import leaves it unchanged.
 
 ## Stack
 
-React 19, TypeScript strict, Vite, React Router, Tailwind CSS 4, shadcn-style UI primitives, Recharts, Lucide, Vitest, React Testing Library, Playwright, ESLint, Prettier, and GitHub Actions.
+React 19, TypeScript strict, Vite, React Router, Tailwind CSS 4, shadcn-style UI primitives, Recharts, SheetJS (xlsx), Lucide, Vitest, React Testing Library, Playwright, ESLint, Prettier, and GitHub Actions.
 
 Authentication and persistent Supabase transactions are planned for Phase 2. A React Native client is planned for Phase 3.
 
@@ -32,6 +46,12 @@ npm run dev
 ```
 
 The app is served at `http://localhost:5173` by default.
+
+To regenerate the downloadable example file:
+
+```powershell
+node scripts/generate-example-xls.mjs
+```
 
 ## Quality Checks
 
@@ -63,78 +83,4 @@ Cloudflare account access and repository connection are performed by the project
 
 ## Scope and Data
 
-This is a portfolio PoC, not financial advice or a production banking system. All transaction records and names are fictional. The public Phase 1 demo is read-only. Login, persistent transactions, and Supabase are deferred to Phase 2.# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+This is a portfolio PoC, not financial advice or a production banking system. Imported data is not saved or transmitted anywhere. Login, persistent transactions, and Supabase are deferred to Phase 2.

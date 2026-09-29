@@ -6,9 +6,10 @@ Ship a polished, live, zero-cost demo that communicates the product and its engi
 
 ### Product
 
-- Open the app directly into a responsive, read-only demo backed by fictional local fixture data; no account, Supabase availability, or environment secrets are needed to explore it.
-- Show monthly spending, income, balance, and transaction count, with category spending and monthly trend charts.
-- Provide a transaction list with date and category filters, plus clear loading, empty, and error states.
+- Open the app directly into a responsive dashboard; no account, Supabase availability, or environment secrets are needed. The app starts empty and prompts the user to import an expense file.
+- Provide a downloadable example `.xls` file and an import control that validates the uploaded workbook and populates the dashboard for the current browser session.
+- Show monthly spending, income, balance, and transaction count, with category spending and monthly trend charts driven by imported data.
+- Provide a transaction list with date and category filters, plus clear loading, empty, error, and import-success states.
 - Use one configured currency for the PoC; no currency conversion or real bank data.
 
 ### Engineering and delivery
@@ -22,7 +23,8 @@ Ship a polished, live, zero-cost demo that communicates the product and its engi
 
 ### Acceptance criteria
 
-- A new visitor can inspect the demo dashboard without signing in or depending on Supabase.
+- A new visitor can open the dashboard, download the example file, import it, and inspect populated KPIs, charts, and transactions without signing in or depending on Supabase.
+- A valid import populates all dashboard views immediately; an invalid import shows row-specific errors and does not alter the existing dataset.
 - KPI and chart calculations are deterministic, tested, and consistent with the displayed transaction set.
 - The app is usable on mobile and desktop, and CI passes lint, tests, and production build.
 - The hosted site and complete MVP toolchain remain within free tiers; hosting limits are documented.
